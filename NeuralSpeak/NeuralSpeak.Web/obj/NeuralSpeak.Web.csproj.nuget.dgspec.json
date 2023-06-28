@@ -1,0 +1,87 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Project\\CNV\\NeuralSpeak\\NeuralSpeak.Web\\NeuralSpeak.Web.csproj": {}
+  },
+  "projects": {
+    "D:\\Project\\CNV\\NeuralSpeak\\NeuralSpeak.Web\\NeuralSpeak.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Project\\CNV\\NeuralSpeak\\NeuralSpeak.Web\\NeuralSpeak.Web.csproj",
+        "projectName": "NeuralSpeak.Web",
+        "projectPath": "D:\\Project\\CNV\\NeuralSpeak\\NeuralSpeak.Web\\NeuralSpeak.Web.csproj",
+        "packagesPath": "C:\\Users\\falgun.mistry\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\CNV\\NeuralSpeak\\NeuralSpeak.Web\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\falgun.mistry\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "D:\\Project\\DCAS - Intone\\Projects\\NCCPortal\\NCCPortal\\NCCPortal.API\\ComponentSpace": {},
+          "D:\\Project\\PositivePurchasing\\Documents\\Packages&Library\\PositivePurchasing.API.LMS.CompetencyAssessment.1.0.7\\PositivePurchasing.API.LMS.CompetencyAssessment.1.0.7": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.15, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.15, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[6.0.15, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.14, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
