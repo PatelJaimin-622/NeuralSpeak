@@ -43,3 +43,5 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 .vs/VSWorkspaceState.json
+NeuralSpeak/NeuralSpeak.Web/obj/
+NeuralSpeak.web/NeuralSpeak.Web/obj/
