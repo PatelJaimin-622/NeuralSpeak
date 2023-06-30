@@ -24,8 +24,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Home/CustomVoice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDdXN0b21Wb2ljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Home/SpeechToSpeech.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTcGVlY2hUb1NwZWVjaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Home/SpeechtoText.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTcGVlY2h0b1RleHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Home/TextToSpeech.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXh0VG9TcGVlY2guY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Remote/NeuralSpeak/NeuralSpeak.web/NeuralSpeak.Web/Views/Shared/Error.cshtml]

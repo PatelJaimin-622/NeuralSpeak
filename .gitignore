@@ -10,3 +10,36 @@
 /.vs/NeuralSpeak/v17/workspaceFileList.bin
 /NeuralSpeak.web/.vs/ProjectEvaluation
 /NeuralSpeak.web/NeuralSpeak.Web/bin/Debug/net6.0
+
+# Project specific
+node_modules/*
+
+# These are needed, however, they're generated so don't need/want to track
+css/app.css.map
+css/app.min.css
+js/app.min.js
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio 2015 cache/options directory
+.vs/
+.vs/VSWorkspaceState.json

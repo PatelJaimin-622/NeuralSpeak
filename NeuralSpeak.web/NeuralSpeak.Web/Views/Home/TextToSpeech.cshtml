@@ -3,6 +3,129 @@
     ViewData["Title"] = "TextToSpeech";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<input hidden value=@ViewBag.token id="token" type="text" >
+
+<script type="text/javascript" src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+<script type="text/javascript">
+
+
+        var token
+     
+        var phraseDiv;
+        var resultDiv;
+        var startSpeakTextAsyncButton;
+
+       
+        var subscriptionKey, serviceRegion;
+        var SpeechSDK;
+        var synthesizer;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            startSpeakTextAsyncButton = document.getElementById("startSpeakTextAsyncButton");
+            token = document.getElementById("token").value;
+            serviceRegion = "eastasia";
+            phraseDiv = document.getElementById("phraseDiv");
+            resultDiv = document.getElementById("resultDiv");
+
+            startSpeakTextAsyncButton.addEventListener("click", function () {
+                startSpeakTextAsyncButton.disabled = true;
+                phraseDiv.innerHTML = "";
+
+                //if (subscriptionKey === "" || subscriptionKey === "subscription") {
+                //    alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                //    startSpeakTextAsyncButton.disabled = false;
+                //    return;
+                //}
+            //var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
+            var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
+
+                synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+
+                let inputText = phraseDiv.value;
+                synthesizer.speakTextAsync(
+                    inputText,
+                    function (result) {
+                        startSpeakTextAsyncButton.disabled = false;
+                        if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+                            resultDiv.innerHTML += "synthesis finished for [" + inputText + "].\n";
+                        } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                            resultDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
+                        }
+                        window.console.log(result);
+                        synthesizer.close();
+                        synthesizer = undefined;
+                    },
+                    function (err) {
+                        startSpeakTextAsyncButton.disabled = false;
+                        resultDiv.innerHTML += "Error: ";
+                        resultDiv.innerHTML += err;
+                        resultDiv.innerHTML += "\n";
+                        window.console.log(err);
+
+                        synthesizer.close();
+                        synthesizer = undefined;
+                    });
+            });
+
+            if (!!window.SpeechSDK) {
+                SpeechSDK = window.SpeechSDK;
+                startSpeakTextAsyncButton.disabled = false;
+
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('warning').style.display = 'none';
+
+                // in case we have a function for getting an authorization token, call it.
+                if (typeof RequestAuthorizationToken === "function") {
+                    RequestAuthorizationToken();
+                }
+            }
+        });
+
+  
+
+</script>
 
 <h1>TextToSpeech</h1>
+
+<div class="content-wrapper">
+    <!-- Content -->
+@*    <input hidden value="a6cf9b866ee640cca1e58c23c138a702" id="serviceRegion" type="text" size="40" placeholder="YourServiceRegion">
+    <input hidden value="eastasia" id="subscriptionKey" type="text" size="40" placeholder="YourSubscriptionKey">*@
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Text ToSpeech</h4>
+
+        <!-- Basic Layout -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Basic Layout</h5>
+                        <small class="text-muted float-end">Default label</small>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-message">Input Text</label>
+                                <textarea id="phraseDiv"
+                                          class="form-control"
+                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                            </div>
+                            <button id="startSpeakTextAsyncButton" class="btn btn-primary">Send</button>
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-message">Output Text</label>
+                                <textarea readonly id="resultDiv"
+                                          class="form-control"
+                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content-backdrop fade"></div>
+</div>
 

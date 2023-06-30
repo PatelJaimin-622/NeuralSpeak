@@ -9,37 +9,37 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = NeuralSpeak.Web
 build_property.RootNamespace = NeuralSpeak.Web
-build_property.ProjectDir = D:\FalgunMistry\Projects\NeuralSpeak\NeuralSpeak\NeuralSpeak.Web\
+build_property.ProjectDir = D:\Remote\NeuralSpeak\NeuralSpeak\NeuralSpeak.Web\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\FalgunMistry\Projects\NeuralSpeak\NeuralSpeak\NeuralSpeak.Web
+build_property.MSBuildProjectDirectory = D:\Remote\NeuralSpeak\NeuralSpeak\NeuralSpeak.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Account/Login.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Account/Register.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Home/Index.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Shared/Error.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/_ViewImports.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/_ViewStart.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/FalgunMistry/Projects/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Shared/_Layout.cshtml]
+[D:/Remote/NeuralSpeak/NeuralSpeak/NeuralSpeak.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-difql4h42j
