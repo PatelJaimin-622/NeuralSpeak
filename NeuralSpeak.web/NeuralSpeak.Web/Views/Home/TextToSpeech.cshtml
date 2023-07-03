@@ -38,8 +38,8 @@
                 //}
             //var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
             var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
-
-                synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+            speechConfig.speechSynthesisVoiceName = "hi-IN-MadhurNeural";
+            synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
                 let inputText = phraseDiv.value;
                 synthesizer.speakTextAsync(

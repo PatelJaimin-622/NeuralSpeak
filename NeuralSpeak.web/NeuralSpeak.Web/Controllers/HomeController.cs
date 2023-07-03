@@ -46,8 +46,9 @@ namespace NeuralSpeak.Web.Controllers
             return View();
         }
 
-        public IActionResult SpeechToSpeech()
+        public async Task<IActionResult> SpeechToSpeech()
         {
+            ViewBag.token = await _helperSevice.getAuthToken();
             return View();
         }
         public IActionResult CustomVoice()
