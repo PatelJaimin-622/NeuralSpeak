@@ -6,6 +6,8 @@
 <input hidden value=@ViewBag.token id="token" type="text" >
 
 <script type="text/javascript" src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/azure-storage-blob/12.14.0/index.js"></script>
+
 <script type="text/javascript">
 
 
@@ -39,15 +41,51 @@
             //var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
             var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
             speechConfig.speechSynthesisVoiceName = "hi-IN-MadhurNeural";
+            //speechConfig.speechSynthesisOutputFormat="Riff24Khz16BitMonoPcm";
             synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
                 let inputText = phraseDiv.value;
                 synthesizer.speakTextAsync(
                     inputText,
-                    function (result) {
+                    async function (result) {
                         startSpeakTextAsyncButton.disabled = false;
                         if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
                             resultDiv.innerHTML += "synthesis finished for [" + inputText + "].\n";
+
+                        let audioData = result.audioData;
+
+                        var requestOptions = {
+                            method: 'POST',
+                            body: audioData,
+                            headers: {
+                                "Content-Type": "application/octet-stream",
+                            }};
+
+                        // Make the AJAX call
+                        fetch(`/Home/UploadToAzureStorage?id=${result.privResultId}`, requestOptions)
+                            .then(function (response) {
+                                if (response.ok) {
+                                    var ele=document.getElementById("audioPlayer")
+                                    ele.setAttribute("src", `https://neuralspeakblob.blob.core.windows.net/speech-history/${result.privResultId}.mp3`)
+                                    ele.classList.remove("d-none")
+                                    synthesizer.pause();
+                                    return response.json();
+                                } else {
+                                    throw new Error('Error: ' + response.status);
+                                }
+                            })
+                            .then(function (result) {
+                                // Handle the success response
+                                console.log(result);
+                            })
+                            .catch(function (error) {
+                                // Handle the error
+                                console.error(error);
+                            });
+
+
+
+
                         } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
                             resultDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
                         }
@@ -117,6 +155,11 @@
                                 <textarea readonly id="resultDiv"
                                           class="form-control"
                                           placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                            </div>
+                            <div>
+                                <audio class="w-100 d-none" id="audioPlayer" controls
+                                       src="https://neuralspeakblob.blob.core.windows.net/speech-history/BBF4A6E3C569485D978DD322B9ECE709.mp3">
+                                </audio>
                             </div>
                         </form>
                     </div>
