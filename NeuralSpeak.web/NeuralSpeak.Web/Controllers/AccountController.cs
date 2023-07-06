@@ -20,7 +20,17 @@ namespace NeuralSpeak.Web.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-         
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectPermanent(returnUrl);
+                }
+                else
+                {
+                    return RedirectToActionPermanent("Index", "Home");
+                }
+            }
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }

@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NeuralSpeak.Web.Data;
-using NeuralSpeak.Web.Data.Entities;
+using NeuralSpeak.Web.Middleware;
 
 namespace NeuralSpeak.Web
 {
@@ -65,15 +66,18 @@ namespace NeuralSpeak.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseHsts();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always,
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            });
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<SecurityHeadersMiddleware>();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
