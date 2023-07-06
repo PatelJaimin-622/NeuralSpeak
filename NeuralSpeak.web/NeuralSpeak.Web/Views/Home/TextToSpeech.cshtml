@@ -1,9 +1,8 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "TextToSpeech";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<input hidden value=@ViewBag.token id="token" type="text" >
+<input hidden value=@ViewBag.token id="token" type="text">
 
 <script type="text/javascript" src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/azure-storage-blob/12.14.0/index.js"></script>
@@ -11,46 +10,46 @@
 <script type="text/javascript">
 
 
-        var token
-     
-        var phraseDiv;
-        var resultDiv;
-        var startSpeakTextAsyncButton;
+    var token
 
-       
-        var subscriptionKey, serviceRegion;
-        var SpeechSDK;
-        var synthesizer;
+    var phraseDiv;
+    var resultDiv;
+    var startSpeakTextAsyncButton;
 
-        document.addEventListener("DOMContentLoaded", function () {
-            startSpeakTextAsyncButton = document.getElementById("startSpeakTextAsyncButton");
-            token = document.getElementById("token").value;
-            serviceRegion = "eastasia";
-            phraseDiv = document.getElementById("phraseDiv");
-            resultDiv = document.getElementById("resultDiv");
 
-            startSpeakTextAsyncButton.addEventListener("click", function () {
-                startSpeakTextAsyncButton.disabled = true;
-                phraseDiv.innerHTML = "";
+    var subscriptionKey, serviceRegion;
+    var SpeechSDK;
+    var synthesizer;
 
-                //if (subscriptionKey === "" || subscriptionKey === "subscription") {
-                //    alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
-                //    startSpeakTextAsyncButton.disabled = false;
-                //    return;
-                //}
+    document.addEventListener("DOMContentLoaded", function () {
+        startSpeakTextAsyncButton = document.getElementById("startSpeakTextAsyncButton");
+        token = document.getElementById("token").value;
+        serviceRegion = "eastasia";
+        phraseDiv = document.getElementById("phraseDiv");
+        resultDiv = document.getElementById("resultDiv");
+
+        startSpeakTextAsyncButton.addEventListener("click", function () {
+            startSpeakTextAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            //if (subscriptionKey === "" || subscriptionKey === "subscription") {
+            //    alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+            //    startSpeakTextAsyncButton.disabled = false;
+            //    return;
+            //}
             //var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
             var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
             speechConfig.speechSynthesisVoiceName = "hi-IN-MadhurNeural";
             //speechConfig.speechSynthesisOutputFormat="Riff24Khz16BitMonoPcm";
             synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
-                let inputText = phraseDiv.value;
-                synthesizer.speakTextAsync(
-                    inputText,
-                    async function (result) {
-                        startSpeakTextAsyncButton.disabled = false;
-                        if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
-                            resultDiv.innerHTML += "synthesis finished for [" + inputText + "].\n";
+            let inputText = phraseDiv.value;
+            synthesizer.speakTextAsync(
+                inputText,
+                async function (result) {
+                    startSpeakTextAsyncButton.disabled = false;
+                    if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+                        resultDiv.innerHTML += "synthesis finished for [" + inputText + "].\n";
 
                         let audioData = result.audioData;
 
@@ -59,13 +58,14 @@
                             body: audioData,
                             headers: {
                                 "Content-Type": "application/octet-stream",
-                            }};
+                            }
+                        };
 
                         // Make the AJAX call
                         fetch(`/Home/UploadToAzureStorage?id=${result.privResultId}`, requestOptions)
                             .then(function (response) {
                                 if (response.ok) {
-                                    var ele=document.getElementById("audioPlayer")
+                                    var ele = document.getElementById("audioPlayer")
                                     ele.setAttribute("src", `https://neuralspeakblob.blob.core.windows.net/speech-history/${result.privResultId}.mp3`)
                                     ele.classList.remove("d-none")
                                     synthesizer.pause();
@@ -86,40 +86,40 @@
 
 
 
-                        } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
-                            resultDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
-                        }
-                        window.console.log(result);
-                        synthesizer.close();
-                        synthesizer = undefined;
-                    },
-                    function (err) {
-                        startSpeakTextAsyncButton.disabled = false;
-                        resultDiv.innerHTML += "Error: ";
-                        resultDiv.innerHTML += err;
-                        resultDiv.innerHTML += "\n";
-                        window.console.log(err);
+                    } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                        resultDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
+                    }
+                    window.console.log(result);
+                    synthesizer.close();
+                    synthesizer = undefined;
+                },
+                function (err) {
+                    startSpeakTextAsyncButton.disabled = false;
+                    resultDiv.innerHTML += "Error: ";
+                    resultDiv.innerHTML += err;
+                    resultDiv.innerHTML += "\n";
+                    window.console.log(err);
 
-                        synthesizer.close();
-                        synthesizer = undefined;
-                    });
-            });
-
-            if (!!window.SpeechSDK) {
-                SpeechSDK = window.SpeechSDK;
-                startSpeakTextAsyncButton.disabled = false;
-
-                document.getElementById('content').style.display = 'block';
-                document.getElementById('warning').style.display = 'none';
-
-                // in case we have a function for getting an authorization token, call it.
-                if (typeof RequestAuthorizationToken === "function") {
-                    RequestAuthorizationToken();
-                }
-            }
+                    synthesizer.close();
+                    synthesizer = undefined;
+                });
         });
 
-  
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startSpeakTextAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+
+            // in case we have a function for getting an authorization token, call it.
+            if (typeof RequestAuthorizationToken === "function") {
+                RequestAuthorizationToken();
+            }
+        }
+    });
+
+
 
 </script>
 
@@ -127,45 +127,71 @@
 
 <div class="content-wrapper">
     <!-- Content -->
-@*    <input hidden value="a6cf9b866ee640cca1e58c23c138a702" id="serviceRegion" type="text" size="40" placeholder="YourServiceRegion">
+    @*    <input hidden value="a6cf9b866ee640cca1e58c23c138a702" id="serviceRegion" type="text" size="40" placeholder="YourServiceRegion">
     <input hidden value="eastasia" id="subscriptionKey" type="text" size="40" placeholder="YourSubscriptionKey">*@
 
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Text To Speech</h4>
+    <div class="container-fluid flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Convert text into a speech</h4>
 
         <!-- Basic Layout -->
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Basic Layout</h5>
-                        <small class="text-muted float-end">Default label</small>
-                    </div>
+                    @* <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Convert text into a speech</h5>
+                    </div>*@
                     <div class="card-body">
                         <form>
-                            <div class="mb-3">
-                                <label class="form-label" for="basic-default-message">Input Text</label>
-                                <textarea id="phraseDiv"
-                                          class="form-control"
-                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
-                            </div>
-                            <button id="startSpeakTextAsyncButton" class="btn btn-primary">Send</button>
-                            <div class="mb-3">
-                                <label class="form-label" for="basic-default-message">Output Text</label>
-                                <textarea readonly id="resultDiv"
-                                          class="form-control"
-                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
-                            </div>
-                            <div>
-                                <audio class="w-100 d-none" id="audioPlayer" controls
-                                       src="https://neuralspeakblob.blob.core.windows.net/speech-history/BBF4A6E3C569485D978DD322B9ECE709.mp3">
-                                </audio>
+                            <div class="row">
+                                <div class="mb-3 col-lg-6">
+                                    <label for="language" class="form-label">Select source lanaguage</label>
+                                    <select id="language" class="select2 form-select">
+                                        <option value="">Select Language</option>
+                                        <option value="en">English</option>
+                                        <option value="fr">French</option>
+                                        <option value="de">German</option>
+                                        <option value="pt">Portuguese</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-lg-6">
+                                    <label for="language" class="form-label">Select destination lanaguage</label>
+                                    <select id="language" class="select2 form-select">
+                                        <option value="">Select Language</option>
+                                        <option value="en">English</option>
+                                        <option value="fr">French</option>
+                                        <option value="de">German</option>
+                                        <option value="pt">Portuguese</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <label class="form-label" for="basic-default-message">Input your text</label>
+                                    <textarea id="phraseDiv"
+                                              class="form-control"
+                                              rows="5"
+                                              placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <button id="startSpeakTextAsyncButton" class="btn btn-primary">
+                                        Convert now
+                                    </button>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <label class="form-label" for="basic-default-message">Output Text</label>
+                                    <textarea readonly id="resultDiv"
+                                              class="form-control"
+                                              rows="5"
+                                              placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                                </div>
+                                <div class="mb-3 col-lg-12">
+                                    <audio class="w-100 d-none" id="audioPlayer" controls
+                                           src="https://neuralspeakblob.blob.core.windows.net/speech-history/BBF4A6E3C569485D978DD322B9ECE709.mp3">
+                                    </audio>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
