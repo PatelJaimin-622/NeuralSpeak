@@ -7,11 +7,14 @@ namespace NeuralSpeak.Web.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
    : base(options)
         {
         }
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public virtual DbSet<UserHistory> UserHistory { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

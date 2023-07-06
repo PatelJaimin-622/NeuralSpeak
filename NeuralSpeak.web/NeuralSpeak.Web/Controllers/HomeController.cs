@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NeuralSpeak.Web.Data;
+using NeuralSpeak.Web.Data.Entities;
 using NeuralSpeak.Web.Helper;
 using NeuralSpeak.Web.Models;
-using System.Configuration;
 using System.Diagnostics;
-using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace NeuralSpeak.Web.Controllers
 {
@@ -13,10 +14,12 @@ namespace NeuralSpeak.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         protected HelperSevice _helperSevice = new HelperSevice();
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext applicationDbContext)
         {
             _logger = logger;
+            _applicationDbContext = applicationDbContext;
         }
 
         public IActionResult Index()
@@ -60,6 +63,32 @@ namespace NeuralSpeak.Web.Controllers
         {
             ViewBag.token = await _helperSevice.getAuthToken();
             return View();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UploadToAzureStorage(string id)
+        {
+            var memoryStream = new MemoryStream();
+            await Request.Body.CopyToAsync(memoryStream);
+            byte[] data = memoryStream.ToArray();
+            var blob = new MemoryStream(data);
+            StreamContent streamContent = new StreamContent(blob);
+
+            var res = await _helperSevice.UploadToAzure(streamContent, id);
+
+            _applicationDbContext.UserHistory.Add(new UserHistory()
+            {
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                FileUrl = id,
+                DestinationLanguage = "",
+                SourceLanguage = "",
+            });
+            await _applicationDbContext.SaveChangesAsync();
+
+
+            return Json(res);
+
         }
     }
 }
