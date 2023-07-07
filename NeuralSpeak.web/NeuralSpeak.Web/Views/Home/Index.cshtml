@@ -1,8 +1,110 @@
-﻿
+﻿@model List<UserAudioView>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+    async function deleteAudio(UserHistoryId)
+    {
+        fetch(`/Home/DeleteAudio?id=${UserHistoryId}`)
+            .then(async function (response) {
+                if (response.ok) {
+                    var ele = document.getElementById("audioPlayer")
+                var res= await response
+                    return response.json();
+                } else {
+                    throw new Error('Error: ' + response.status);
+                }
+            })
+            .then(function (result) {
+                // Handle the success response
+                if(result.success)
+                {
+                    location.reload();
+                }
+                console.log(result);
+            })
+            .catch(function (error) {
+                // Handle the error
+                console.error(error);
+            });
+    }
+</script>
 
-<h1>Index</h1>
+    <style type="text/css">
+        audio::-webkit-media-controls-panel, video::-webkit-media-controls-panel {
+        background-color: #696cff29;
+        }
+
+    audio::-webkit-media-controls-mute-button {
+        display: none !important;
+    }
+
+    audio::-webkit-media-controls-volume-slider {
+        display: none !important;
+    }
+
+    audio::-webkit-media-controls-volume-control-container.closed {
+        display: none !important;
+    }
+
+    audio::-webkit-media-controls-volume-control-container {
+        display: none !important;
+    }
+
+    .icon {
+        /* Styles for the icon */
+        display: inline-block;
+        color: #696cff;
+        transition: background-color 0.3s ease;
+    }
+
+        .icon:hover {
+            /* Styles for hover effect */
+            color: #303171;
+          
+        }
+
+
+
+    </style>
+
+
+
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Dashboard</h4>
+
+        <!-- Basic Layout -->
+        @foreach (var item in Model)
+        {
+            <div style="background-color:#696cff29;border-radius:15px" class="row mb-2">
+                <div class=" col-10 col-md-8">
+                    <audio class="w-100" id="audioPlayer" controls
+                           src="https://neuralspeakblob.blob.core.windows.net/speech-history/@(item.FileUrl).mp3">
+                    </audio>
+                </div>
+                <div class=" col-lg-2 col-md-2 d-none d-md-grid  my-auto text-center">
+                    <p class="mb-0">@item.CreatedDate.ToString("dd MMMM")</p>
+                    <p class="mb-0">@item.CreatedDate.ToString("h:mm tt")</p>
+                </div>
+                <div class=" col-1 my-auto text-center">
+                    <i onclick="deleteAudio(@item.UserHistoryId)" style="font-size:35px" class="icon bx bxs-x-circle"></i>
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+   
+</div>
+
+
+
+
+
 

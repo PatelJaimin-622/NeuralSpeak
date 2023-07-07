@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NeuralSpeak.Web.Data;
 using NeuralSpeak.Web.Data.Entities;
 using NeuralSpeak.Web.Helper;
@@ -24,7 +25,29 @@ namespace NeuralSpeak.Web.Controllers
 
         public IActionResult Index()
         {
-            return View("Index");
+            List<UserHistory> userHistoryList = _applicationDbContext.UserHistory.Where(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToList();
+            //var UserAudioViewList = _applicationDbContext.Users.Include(x=>x.UserHistory).Where(y => y.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            List<UserAudioView> model = new List<UserAudioView>();
+
+            foreach (var userHistory in userHistoryList)
+            {
+                UserAudioView audioView = new UserAudioView
+                {
+                    // Map the properties from UserHistory to UserAudioView
+                    UserHistoryId = userHistory.UserHistoryId,
+                    UserId = userHistory.UserId,
+                    FileUrl = userHistory.FileUrl,
+                    CreatedDate = userHistory.CreatedDate,
+                    SourceLanguage = userHistory.SourceLanguage,
+                    DestinationLanguage = userHistory.DestinationLanguage,
+                    // Add more properties as needed
+                };
+
+                model.Add(audioView);
+            }
+
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -54,8 +77,9 @@ namespace NeuralSpeak.Web.Controllers
             ViewBag.token = await _helperSevice.getAuthToken();
             return View();
         }
-        public IActionResult CustomVoice()
+        public async Task<IActionResult> CustomVoice()
         {
+            ViewBag.token = await _helperSevice.getAuthToken();
             return View();
         }
 
@@ -74,7 +98,6 @@ namespace NeuralSpeak.Web.Controllers
             byte[] data = memoryStream.ToArray();
             var blob = new MemoryStream(data);
             StreamContent streamContent = new StreamContent(blob);
-
             var res = await _helperSevice.UploadToAzure(streamContent, id);
 
             _applicationDbContext.UserHistory.Add(new UserHistory()
@@ -88,6 +111,29 @@ namespace NeuralSpeak.Web.Controllers
 
 
             return Json(res);
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> DeleteAudio(int id)
+        {
+            var record = await _applicationDbContext.UserHistory.FindAsync(id);
+            if (record != null)
+            {
+                _applicationDbContext.UserHistory.Remove(record);
+                await _applicationDbContext.SaveChangesAsync();
+                return Json(new
+                {
+                    success = true,
+                    message = "Audio Deleted Successfully"
+                });
+            }
+                      
+            return Json(new
+            {
+                success = false,
+                message = "audio not found"
+            });
 
         }
     }
