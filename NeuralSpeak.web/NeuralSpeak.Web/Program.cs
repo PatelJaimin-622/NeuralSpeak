@@ -78,7 +78,7 @@ namespace NeuralSpeak.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiddleware<SecurityHeadersMiddleware>();
+            //app.UseMiddleware<SecurityHeadersMiddleware>();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
