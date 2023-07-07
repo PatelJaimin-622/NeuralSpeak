@@ -66,6 +66,7 @@ namespace NeuralSpeak.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            app.UseStaticFiles();
             app.UseHsts();
             app.UseHttpsRedirection();
             app.UseCookiePolicy(new CookiePolicyOptions
