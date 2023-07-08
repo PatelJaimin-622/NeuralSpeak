@@ -106,10 +106,10 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <li class="menu-item active">
-                        <a href="index.html" class="menu-link">
+                    <li class="menu-item">
+                        <a href="@Url.Action("Index","Home")" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="MyProfile">My Profile</div>
+                            <div data-i18n="Dashboard">Dashboard</div>
                         </a>
                     </li>
                     <li class="menu-item">
@@ -121,15 +121,10 @@
                     <li class="menu-item">
                         <a href="@Url.Action("SpeechtoTranslate","Home")" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Speech to text">Speech to Translate</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="@Url.Action("SpeechtoText","Home")" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Speech to text">Speech to text</div>
                         </a>
                     </li>
+
                     <li class="menu-item">
                         <a href="@Url.Action("SpeechToSpeech","Home")" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -237,5 +232,17 @@
     <script src="~/assets/js/main.js"></script>
     <script src="~/assets/js/dashboards-analytics.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.menu-item').removeClass('active');
+            $('.menu-item a').each(function () {
+                if (window.location.href ==this.href) {
+                    $(this).parent().addClass('active')
+                }
+            });
+
+        });
+    </script>
 </body>
+
 </html>

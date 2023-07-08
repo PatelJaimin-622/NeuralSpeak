@@ -12,7 +12,7 @@
 
     token = document.getElementById("token").value;
     var phraseDiv;
-    var startRecognizeOnceAsyncButton;
+    var startRecognizeOnceAsyncButton, stopRecognizeOnceAsyncButton;
 
     // subscription key and region for speech services.
     var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
@@ -21,13 +21,21 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        stopRecognizeOnceAsyncButton = document.getElementById("stopRecognizeOnceAsyncButton");
+        stopRecognizeOnceAsyncButton.disabled = true;
         serviceRegion = "eastasia";
         languageTargetOptions = document.getElementById("languageTargetOptions");
         languageSourceOptions = document.getElementById("languageSourceOptions");
         phraseDiv = document.getElementById("phraseDiv");
-
+        stopRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = false;
+            stopRecognizeOnceAsyncButton.disabled = true;
+            console.log("clicked");
+            recognizer.stopContinuousRecongition();
+        });
         startRecognizeOnceAsyncButton.addEventListener("click", function () {
             startRecognizeOnceAsyncButton.disabled = true;
+            stopRecognizeOnceAsyncButton.disabled = false;
             phraseDiv.innerHTML = "";
             var speechConfig = SpeechSDK.SpeechTranslationConfig.fromAuthorizationToken(token, serviceRegion);
 
@@ -70,17 +78,7 @@
     });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-<div class="content-wrapper">
+<div class="content-wrapper" id="content">
 
     <div class="container-fluid flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>Speech To Translate</h4>
@@ -89,10 +87,6 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-@*                        <h5 class="mb-0">Basic Layout</h5>
-                        <small class="text-muted float-end"></small>*@
-                    </div>
                     <div class="card-body">
                         <form>
                             <div class="mt-2 mb-3">
@@ -137,20 +131,35 @@
                                 </select>
                             </div>
 
-                            <button id="startRecognizeOnceAsyncButton" class="btn btn-primary">Send</button>
-                            <div class="mb-3">
-                                <label class="form-label" for="basic-default-message">Output Text</label>
-                                <textarea readonly id="phraseDiv"
-                                          class="form-control"
-                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
-                            </div>
+                            <button id="startRecognizeOnceAsyncButton" class="btn btn-success">
+                                <i class="bx bx-microphone display-3"></i>
+                            </button>
+                            <button id="stopRecognizeOnceAsyncButton" class="btn btn-danger">
+                                <i class="bx bx-microphone-off display-3"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                   
+                    <div class="card-body">
 
+                        <div class="mb-3">
+                            <label class="form-label" for="basic-default-message">Output Text</label>
+                            <textarea readonly id="phraseDiv"
+                                      class="form-control"
+                                      rows="9"
+                                      placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="content-backdrop fade"></div>
+    <div class="container-fluid flex-grow-1 container-p-y" id="warning">
+        <h1 style="font-weight:500;">Speech Recognition Speech SDK not found (microsoft.cognitiveservices.speech.sdk.bundle.js missing).</h1>
+    </div>
 </div>
