@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NeuralSpeak.Web.Data;
 using NeuralSpeak.Web.Data.Entities;
@@ -80,6 +81,13 @@ namespace NeuralSpeak.Web.Controllers
         public async Task<IActionResult> CustomVoice()
         {
             ViewBag.token = await _helperSevice.getAuthToken();
+            List<SelectListItem> selctLang = new List<SelectListItem>();
+            foreach (var item in Languages.langList)
+            {
+                selctLang.Add(new SelectListItem { Text = item.Name, Value = item.Code});
+            }
+            ViewBag.langList = new SelectList(selctLang, "Value","Text");
+            ViewBag.AlllangList = Languages.langList;
             return View();
         }
 
