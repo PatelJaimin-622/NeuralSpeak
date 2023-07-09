@@ -237,7 +237,19 @@
     <script src="~/assets/js/main.js"></script>
     <script src="~/assets/js/dashboards-analytics.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.menu-item').removeClass('active');
+            $('.menu-item a').each(function () {
+                if (window.location.href ==this.href) {
+                    $(this).parent().addClass('active')
+                }
+            });
+
+        });
+    </script>
 </body>
+
 </html>
 <script>
     $(document).ready(() => {
