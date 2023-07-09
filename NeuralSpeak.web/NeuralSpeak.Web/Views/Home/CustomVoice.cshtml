@@ -2,6 +2,14 @@
     ViewData["Title"] = "CustomVoice";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    button:disabled,
+button[disabled]{
+  border: 1px solid #999999 !important;
+  background-color: #cccccc !important;
+  color: #666666 !important;
+}
+</style>
 <input hidden value=@ViewBag.token id="token" type="text">
 <!-- Speech SDK reference sdk. -->
 <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
@@ -25,7 +33,7 @@
     var isHost = true;
     var isDisconnecting = false;
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         token = document.getElementById("token").value;
         serviceRegion = "eastasia";
         phraseDiv = document.getElementById("phraseDiv");
@@ -44,7 +52,7 @@
 
 
         // show the UI elements required for starting a conversation
-        startModeButton.addEventListener("click", function () {
+        startModeButton.addEventListener("click", function() {
             conversationId.disabled = true;
             startConversationButton.disabled = false;
             joinConversationButton.disabled = true;
@@ -55,7 +63,7 @@
         });
 
         // show the UI elements required for joining a conversation
-        joinModeButton.addEventListener("click", function () {
+        joinModeButton.addEventListener("click", function() {
             conversationId.disabled = false;
             startConversationButton.disabled = true;
             joinConversationButton.disabled = false;
@@ -66,16 +74,16 @@
         });
 
         // send a text message when there is an active conversation available
-        sendMessageButton.addEventListener("click", function () {
+        sendMessageButton.addEventListener("click", function() {
             var textToSend = messageInputBox.value;
             if (textToSend == "") {
                 alert("Enter some text");
                 return;
             }
-            conversationTranslator.sendTextMessageAsync(textToSend, function () {
+            conversationTranslator.sendTextMessageAsync(textToSend, function() {
                 console.log("send text message");
                 phraseDiv.innerHTML += "\rsend text message";
-            }, function (error) {
+            }, function(error) {
                 console.log("error sending text message " + error);
                 phraseDiv.innerHTML += "\r" + error;
             });
@@ -84,33 +92,33 @@
         // start speaking (the language must be a speech supported language)
         // the SDK will attempt to turn your microphone on in order to capture your voice
         // a prompt may appear requesting that you grant browser microphone permissions
-        startSpeakingButton.addEventListener("click", function () {
-            conversationTranslator.startTranscribingAsync(function () {
+        startSpeakingButton.addEventListener("click", function() {
+            conversationTranslator.startTranscribingAsync(function() {
                 console.log("send start speak");
                 phraseDiv.innerHTML += "\rstart speaking";
                 startSpeakingButton.disabled = true;
                 stopSpeakingButton.disabled = false;
-            }, function (error) {
+            }, function(error) {
                 console.log("error speaking " + error);
                 phraseDiv.innerHTML += "\r" + error;
             });
         });
 
         // stop speaking
-        stopSpeakingButton.addEventListener("click", function () {
-            conversationTranslator.stopTranscribingAsync(function () {
+        stopSpeakingButton.addEventListener("click", function() {
+            conversationTranslator.stopTranscribingAsync(function() {
                 console.log("send stop speak");
                 phraseDiv.innerHTML += "\rstop speaking";
                 startSpeakingButton.disabled = false;
                 stopSpeakingButton.disabled = true;
-            }, function (error) {
+            }, function(error) {
                 console.log("error stop speaking " + error);
                 phraseDiv.innerHTML += "\r" + error;
             });
         });
 
         // start a conversation as the host
-        startConversationButton.addEventListener("click", function () {
+        startConversationButton.addEventListener("click", function() {
 
             reset();
 
@@ -145,12 +153,12 @@
             phraseDiv.innerHTML = "Starting a conversation...";
 
             // create a conversation
-            conversation = SpeechSDK.Conversation.createConversationAsync(config, function () {
+            conversation = SpeechSDK.Conversation.createConversationAsync(config, function() {
 
                 // success callback for create conversation
                 conversation.startConversationAsync(
                     // success callback for start conversation
-                    function (result) {
+                    function(result) {
                         conversationId.value = conversation.conversationId;
                         phraseDiv.innerHTML += "\rStarted conversation " + conversation.conversationId;
                         leaveConversationButton.disabled = false;
@@ -159,7 +167,7 @@
                         handleJoinConversation(true, conversation, nickname, language,
 
                             // success callback for join conversation
-                            function (result) {
+                            function(result) {
                                 // joined ok
                                 phraseDiv.innerHTML += "\rJoined conversation " + conversation.conversationId;
                                 sendMessageButton.disabled = false;
@@ -169,7 +177,7 @@
                             },
 
                             // error callback for join conversation
-                            function (error) {
+                            function(error) {
                                 // error on joining
                                 console.log(error);
                                 phraseDiv.innerHTML += "\rError joining conversation: " + error;
@@ -178,7 +186,7 @@
                     },
 
                     // error callback for start conversation
-                    function (error) {
+                    function(error) {
                         console.log(error);
                         phraseDiv.innerHTML += "\rError starting conversation: " + error;
                         resetUI();
@@ -187,7 +195,7 @@
             },
 
                 // error callback for create conversation
-                function (error) {
+                function(error) {
                     console.log(error);
                     phraseDiv.innerHTML += "\rError creating conversation: " + error;
                     resetUI();
@@ -195,7 +203,7 @@
         });
 
         // join a conversation as a participant
-        joinConversationButton.addEventListener("click", function () {
+        joinConversationButton.addEventListener("click", function() {
 
             reset();
 
@@ -225,7 +233,7 @@
             handleJoinConversation(false, conversationCode, nickname, language,
 
                 // success callback for join conversation
-                function (result) {
+                function(result) {
                     phraseDiv.innerHTML += "\rJoined conversation " + conversationCode;
                     sendMessageButton.disabled = false;
                     startSpeakingButton.disabled = false;
@@ -234,7 +242,7 @@
                 },
 
                 // error callback for join conversation
-                function (error) {
+                function(error) {
                     console.log(error);
                     phraseDiv.innerHTML += "\rError joining conversation: " + error;
                     resetUI();
@@ -243,7 +251,7 @@
         });
 
         // leave a conversation
-        leaveConversationButton.addEventListener("click", function () {
+        leaveConversationButton.addEventListener("click", function() {
 
             var leaveConversation = false;
             if (isHost) {
@@ -273,6 +281,12 @@
 
             // create the conversation translator
             conversationTranslator = new SpeechSDK.ConversationTranslator(audioConfig);
+
+            // Create the speech config to dectate voice from text
+            var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
+            speechConfig.speechSynthesisVoiceName = "hi-IN-MadhurNeural";
+            synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+
 
             // hook up the events
 
@@ -353,14 +367,48 @@
                 window.console.log(e);
                 phraseDiv.innerHTML += "\rReceived a transcription from " + getParticipantName(e.result.participantId) + ": " + e.result.text;
                 phraseDiv.innerHTML += "\rTranslated into " + language + ": " + e.result.translations.get(language);
+                console.log("It works every time");
+                console.log(getParticipantName(e.result.participantId));
+                console.log(displayName);
+                if(getParticipantName(e.result.participantId) != displayName.value)
+                synthesizer.speakTextAsync(e.result.translations.get(language),
+                    async function(result) {
+                        console.log("It also works every time");
+                        if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+                            //resultDiv.innerHTML += "synthesis finished for [" + inputText + "].\n";
+
+                            let audioData = result.audioData;
+                            var audio = new Audio(result.audioData);
+                            audio.play();
+
+                        } else if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                            phraseDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
+                        }
+                        window.console.log(result);
+                        //synthesizer.close();
+                        //synthesizer = undefined;
+                    },
+                                    function (err) {
+                    startSpeakTextAsyncButton.disabled = false;
+                    resultDiv.innerHTML += "Error: ";
+                    resultDiv.innerHTML += err;
+                    resultDiv.innerHTML += "\n";
+                    window.console.log(err);
+
+                    synthesizer.close();
+                    synthesizer = undefined;
+                });
+
+                //var audio = new Audio('https://neuralspeakblob.blob.core.windows.net/speech-history/BBF4A6E3C569485D978DD322B9ECE709.mp3');
+                //audio.play();
             };
 
             // a 'final' message has been received
-            conversationTranslator.transcribing = (s, e) => {
-                window.console.log(e);
-                phraseDiv.innerHTML += "\rReceived a partial transcription from " + getParticipantName(e.result.participantId) + ": " + e.result.text;
-                phraseDiv.innerHTML += "\rTranslated into " + language + ": " + e.result.translations.get(language);
-            };
+            //conversationTranslator.transcribing = (s, e) => {
+            //    window.console.log(e);
+            //    phraseDiv.innerHTML += "\rReceived a partial transcription from " + getParticipantName(e.result.participantId) + ": " + e.result.text;
+            //    phraseDiv.innerHTML += "\rTranslated into " + language + ": " + e.result.translations.get(language);
+            //};
 
             try {
                 if (isHost) {
@@ -389,12 +437,14 @@
         }
 
         function handleLeaveConversation() {
+                    synthesizer.close();
+                    synthesizer = undefined;
             isDisconnecting = true;
             if (isHost) {
                 conversation.endConversationAsync(
 
                     // success callback for end conversation
-                    function () {
+                    function() {
                         phraseDiv.innerHTML += "\rEnded conversation.";
 
                         // check the conversation object is still available
@@ -406,14 +456,14 @@
                         conversation.deleteConversationAsync(
 
                             // success callback for delete conversation
-                            function (result) {
+                            function(result) {
                                 phraseDiv.innerHTML += "\rLeft conversation.";
                                 reset();
                                 resetUI();
                             },
 
                             // error callback for delete conversation
-                            function (error) {
+                            function(error) {
                                 console.log(error);
                                 phraseDiv.innerHTML += "\rError leaving conversation: " + error;
                                 reset();
@@ -423,7 +473,7 @@
                     },
 
                     // error callback for end conversation
-                    function (error) {
+                    function(error) {
                         console.log(error);
                         phraseDiv.innerHTML += "\rError ending conversation: " + error;
                         reset();
@@ -433,14 +483,14 @@
                 conversationTranslator.leaveConversationAsync(
 
                     // success callback for leave conversation
-                    function (result) {
+                    function(result) {
                         phraseDiv.innerHTML += "\rLeft conversation.";
                         reset();
                         resetUI();
                     },
 
                     // error callback for leave conversation
-                    function (error) {
+                    function(error) {
                         console.log(error);
                         phraseDiv.innerHTML += "\rError leaving conversation: " + error;
                         reset();
@@ -564,15 +614,15 @@
                                    type="text"
                                    value="en-US">
                         </div>
-                        <div class="row justify-content-end">
+                        <div class="row justify-content-center">
                             <div class="col-sm-10">
-                                <button id="startConversation" class="btn btn-primary">
+                                <button id="startConversation" class="btn btn-primary my-2">
                                     Create conversation
                                 </button>
-                                <button disabled id="joinConversation" class="btn btn-secondary">
+                                <button disabled id="joinConversation" class="btn btn-primary my-2">
                                     Join conversation
                                 </button>
-                                <button disabled id="leaveConversation" class="btn btn-danger">
+                                <button disabled id="leaveConversation" class="btn btn-danger my-2">
                                     Leave conversation
                                 </button>
                             </div>

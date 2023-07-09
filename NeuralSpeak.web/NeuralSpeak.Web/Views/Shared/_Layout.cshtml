@@ -106,39 +106,39 @@
                 <div class="menu-inner-shadow"></div>
 
                 <ul class="menu-inner py-1">
-                    <li class="menu-item active">
-                        <a href="index.html" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <li class="menu-item" id="index">
+                        <a href="index" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-id-card"></i>
                             <div data-i18n="MyProfile">My Profile</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li id="TextToSpeech" class="menu-item">
                         <a href="@Url.Action("TextToSpeech","Home")" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bx-volume-full"></i>
                             <div data-i18n="Text to text">Text to speech</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li id="SpeechtoTranslate" class="menu-item">
                         <a href="@Url.Action("SpeechtoTranslate","Home")" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bx-message-detail"></i>
                             <div data-i18n="Speech to text">Speech to Translate</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li id="SpeechtoText" class="menu-item">
                         <a href="@Url.Action("SpeechtoText","Home")" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bx-microphone"></i>
                             <div data-i18n="Speech to text">Speech to text</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li id="SpeechToSpeech" class="menu-item">
                         <a href="@Url.Action("SpeechToSpeech","Home")" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Speech to speech">Speech to speech</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li id="CustomVoice" class="menu-item">
                         <a href="@Url.Action("CustomVoice","Home")" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bx-window-alt"></i>
                             <div data-i18n="Custom voice">Custom voice</div>
                         </a>
                     </li>
@@ -239,3 +239,23 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>
+<script>
+    $(document).ready(() => {
+        console.log("Navigation is working properly");
+        console.log(window.location.pathname);
+        let nav = window.location.pathname.split("/");
+        console.log(nav);
+        console.log(nav[2]);
+        if (nav[2] != null) {
+            console.log("changing active")
+            $(".menu-item").each(() => {
+                console.log("removing class");
+                $(this).removeClass("active");
+            })
+            $(`#${nav[2]}`).addClass("active");
+        }
+        else {
+            $(`#index`).addClass("active");
+        }
+    })
+</script>
