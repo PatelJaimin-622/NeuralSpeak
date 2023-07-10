@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NeuralSpeak.Web.Data;
-using NeuralSpeak.Web.Middleware;
+using NeuralSpeak.Web.Services;
 
 namespace NeuralSpeak.Web
 {
@@ -19,7 +19,9 @@ namespace NeuralSpeak.Web
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
-
+            builder.Services.AddScoped<IHelperSevice, HelperSevice>();
+            builder.Services.AddScoped<ILanguageServices, LanguageServices>();
+            builder.Services.AddScoped<IUserHistoryService, UserHistoryService>();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 //// Password settings.
@@ -58,7 +60,7 @@ namespace NeuralSpeak.Web
             {
                 var services = scope.ServiceProvider;
 
-                SeedUsers.InitializeAsync(services).Wait();
+                SeedData.InitializeAsync(services).Wait();
             }
             #endregion
             if (app.Environment.IsDevelopment())

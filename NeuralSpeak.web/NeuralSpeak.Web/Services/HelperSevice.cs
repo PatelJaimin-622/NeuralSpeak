@@ -1,26 +1,25 @@
-﻿using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 
-namespace NeuralSpeak.Web.Helper
+namespace NeuralSpeak.Web.Services
 {
-    public class HelperSevice
+    public class HelperSevice : IHelperSevice
     {
-        public async Task<string> getAuthToken()
+        private readonly IConfiguration _configuration;
+        public HelperSevice(IConfiguration configuration)
         {
-            var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json").Build();
+            _configuration = configuration;
+        }
+        public async Task<string> GetAuthToken()
+        {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken");
-            //request.Headers.Add("Ocp-Apim-Subscription-Key", "a6cf9b866ee640cca1e58c23c138a702");
-            request.Headers.Add("Ocp-Apim-Subscription-Key", "862c2f7c4eaf4ef4aeb8229d7b971fc4");
+            var request = new HttpRequestMessage(HttpMethod.Post, _configuration.GetValue<string>("AzureSpeechService:BaseUrl"));
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _configuration.GetValue<string>("AzureSpeechService:SubscriptionKey"));
             var content = new StringContent(string.Empty);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             request.Content = content;
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsStringAsync();
-            return result;
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<object> UploadToAzure(StreamContent streamContent,string id)
@@ -32,8 +31,13 @@ namespace NeuralSpeak.Web.Helper
             request.Content = streamContent;
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            Console.WriteLine(await response.Content.ReadAsStringAsync());
             return response;
         }
+    }
+
+    public interface IHelperSevice
+    {
+        Task<string> GetAuthToken();
+        Task<object> UploadToAzure(StreamContent streamContent, string id);
     }
 }

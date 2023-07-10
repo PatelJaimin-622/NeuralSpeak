@@ -284,17 +284,12 @@ button[disabled]{
 
             // Create the speech config to dectate voice from text
             var speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
-            var voiceModelAll = @Html.Raw(Json.Serialize(ViewBag.AlllangList));
-            var voiceModel = voiceModelAll.forEach((item) => {
-            console.log("language code loop"+item.code);
-            console.log("language" + language);
-            console.log(item.code == language);
-            if(item.code == language) {
-                return item.voice;
-            }
-            })
+            var voiceModelAll = @Html.Raw(Json.Serialize(ViewBag.Languages));
+            var voiceModel=voiceModelAll.find(x => x.code == language)
+
+           
             console.log("voice Model Name"+voiceModel);
-            speechConfig.speechSynthesisVoiceName = voiceModel!=null? voiceModel:"hi-IN-MadhurNeural";
+            speechConfig.speechSynthesisVoiceName = voiceModel!=null? voiceModel.voice:"hi-IN-MadhurNeural";
             console.log("voice Model Name"+speechConfig.speechSynthesisVoiceName);
             synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
 
@@ -625,7 +620,7 @@ button[disabled]{
                                    type="text"
                                    value="en-US">*@
 
-                            @Html.DropDownList("languageCode", (SelectList)ViewBag.langList,"-select-",new{@class = "select2 form-select"})
+                            @Html.DropDownList("languageCode", new SelectList(ViewBag.LanguagesDropDown, "Value", "Text"),"Please select language",new{@class = "select2 form-select"})
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-sm-10">
