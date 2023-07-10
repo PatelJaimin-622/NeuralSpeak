@@ -2,12 +2,7 @@
     ViewData["Title"] = "SpeechtoText";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .pb-40px
-    {
-        padding-bottom:40px;
-    }
-</style>
+
 
 
 <input hidden value=@ViewBag.token id="token" type="text">
@@ -26,6 +21,8 @@
     var synthesizer;
     var outputSpeechLang = "hi-IN-MadhurNeural";
     languageTargetOptions = document.getElementById("languageTargetOptions");
+    
+
 
     document.addEventListener("DOMContentLoaded", function () {
         startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
@@ -38,12 +35,14 @@
 
 
         startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            debugger
             startRecognizeOnceAsyncButton.disabled = true;
             phraseDiv.innerHTML = "";
             var speechConfig = SpeechSDK.SpeechTranslationConfig.fromAuthorizationToken(token, serviceRegion);
 
             speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
-            let language = languageTargetOptions.value
+            console.log(languageTargetOptions.value.substring(0,2))
+            let language = languageTargetOptions.value.substring(0,2)
             speechConfig.addTargetLanguage(language)
 
             var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
@@ -60,7 +59,10 @@
                         //for text to speech
 
                         var speechConfig1 = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
-                        speechConfig1.speechSynthesisVoiceName = outputSpeechLang;
+                        var voiceModelAll = @Html.Raw(Json.Serialize(ViewBag.Languages));
+                        outputSpeechLang = voiceModelAll.find(x => x.code == languageTargetOptions.value)
+                        debugger
+                        speechConfig1.speechSynthesisVoiceName = outputSpeechLang.voice;
                         synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig1);
 
                         synthesizer.speakTextAsync(
@@ -133,7 +135,6 @@
                             <div class="mt-2 mb-3">
                                 <label for="largeSelect" class="form-label">Source Language</label>
                                 @Html.DropDownList("languageSourceOptions", new SelectList(ViewBag.LanguagesDropDown, "Value", "Text"),"Please select language",new{@class = "select2 form-select"})
-                                
                             </div>
 
                             <div class="mt-2 mb-3">
@@ -141,26 +142,14 @@
                                 @Html.DropDownList("languageTargetOptions", new SelectList(ViewBag.LanguagesDropDown, "Value", "Text"),"Please select language",new{@class = "select2 form-select"})
                             </div>
 
-                            <button id="startRecognizeOnceAsyncButton" class="btn btn-primary">
-                                <i class="bx bx-microphone"></i>
-                            </button>
+                            <button id="startRecognizeOnceAsyncButton" class="btn btn-primary">Send</button>
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-message">Output Text</label>
+                                <textarea readonly id="phraseDiv"
+                                          class="form-control"
+                                          placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
+                            </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card mb-4 pb-40px">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label class="form-label" for="basic-default-message">Output Text</label>
-                            <textarea readonly id="phraseDiv"
-                                      class="form-control"
-                                      rows="6"
-                                      placeholder="Hi, Do you have a moment to talk Joe?"></textarea>
-                        </div>
-                        </>
                     </div>
                 </div>
             </div>

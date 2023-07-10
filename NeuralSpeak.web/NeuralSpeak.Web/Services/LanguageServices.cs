@@ -15,13 +15,20 @@ namespace NeuralSpeak.Web.Services
 
         public async Task<List<Languages>> GetLanguages()
         {
-            return await _applicationDbContext.Language.Where(x => x.Locale != null && x.Locale.ToLower() != "n/a")
-                                                        .Select(x => new Languages
-                                                        {
-                                                            Name = x.LocaleName + " (" + x.LocalName + ")",
-                                                            Code = x.Locale,
-                                                            Voice = x.ShortName
-                                                        }).ToListAsync();
+            return await _applicationDbContext.Language
+                                              .Where(x => x.Locale != null
+                                                    && x.Locale.ToLower() != "n/a"
+                                                    && x.LocaleName != null
+                                                    && x.ShortName != null
+                                                    && x.LocalName != null
+                                                    && x.Gender.ToLower() == "male")
+                                              .GroupBy(x => x.Locale)
+                                              .Select(x => new Languages
+                                              {
+                                                  Name = x.FirstOrDefault().LocaleName + " (" + x.FirstOrDefault().LocalName + ")",
+                                                  Code = x.Key,
+                                                  Voice = x.FirstOrDefault().ShortName
+                                              }).ToListAsync();
         }
     }
     public interface ILanguageServices
