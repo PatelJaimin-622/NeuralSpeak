@@ -21,7 +21,8 @@ namespace NeuralSpeak.Web.Services
                                                     && x.LocaleName != null
                                                     && x.ShortName != null
                                                     && x.LocalName != null
-                                                    && x.Gender.ToLower() == "male")
+                                                    && x.Gender.ToLower() == "male"
+                                                    )
                                               .GroupBy(x => x.Locale)
                                               .Select(x => new Languages
                                               {
